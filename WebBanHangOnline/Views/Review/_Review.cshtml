@@ -1,0 +1,80 @@
+﻿@model WebBanHangOnline.Models.EF.ReviewProduct
+
+<div class="add_review">
+    <form id="review_form" method="post">
+        @Html.AntiForgeryToken()
+        <div>
+            <h1>Add Review</h1>
+            @Html.TextBoxFor(x => x.FullName, new { @class = "form_input input_name", @placeholder = "Name*", @id = "review_name" })
+            @Html.TextBoxFor(x => x.Email, new { @class = "form_input input_email", @placeholder = "Email*", @id = "review_email" })
+            @Html.HiddenFor(x => x.UserName)
+            @Html.HiddenFor(x => x.ProductId, new { @Value = ViewBag.ProductId })
+            <input type="text" id="txtRate" name="Rate" value="4" style="visibility:hidden;" />
+        </div>
+        <div>
+            <h1>Your Rating:</h1>
+            <ul class="user_star_rating">
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+            </ul>
+            @Html.TextAreaFor(x => x.Content, new { @class = "input_review", @rows = "4", @placeholder = "Your Review" })
+        </div>
+        <div class="text-left text-sm-right">
+            <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
+        </div>
+    </form>
+</div>
+
+<div id="load_send"></div>
+
+<script>
+    $(document).ready(function() {
+        $('#review_form').submit(function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var formData = form.serialize();;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("PostReview", "Review")',
+                data: formData,
+                beforeSend: function() {
+                    $('#review_submit').attr("disabled", "disabled");
+                    $('#load_send').html('<h2>Đang gửi....</h2>');
+                },
+                success: function (res) {
+                    if (res.Success) {
+                        $("#review_form")[0].reset();
+                        $('#review_submit').removeAttr("disabled");
+                        $('#load_send').html('');
+                        reloadReviews();
+                    } else {
+                        $('#load_send').html('<h2>' + res.Message + '</h2>');
+                    }
+                    $('#review_submit').removeAttr("disabled");
+                },
+                error: function() {
+                    $('#review_submit').removeAttr("disabled");
+                    $('#load_send').html('<h2>Gửi thất bại. Vui lòng thử lại.</h2>');
+                }
+            });
+        });
+
+        function reloadReviews() {
+        var productId = @ViewBag.ProductId;
+        $.ajax({
+            url: '@Url.Action("_Load_Review", "Review")',
+            type: 'GET',
+            data: { productId: productId },
+            success: function(result) {
+                $('.reviews_col').html(result);
+            },
+            error: function() {
+                alert('Đã xảy ra lỗi khi tải lại đánh giá.');
+            }
+        });
+    }
+    });
+</script>

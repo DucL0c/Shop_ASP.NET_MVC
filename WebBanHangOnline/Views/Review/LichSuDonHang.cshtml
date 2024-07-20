@@ -1,0 +1,24 @@
+﻿﻿@model IEnumerable<WebBanHangOnline.Models.EF.Order>
+@if (Model != null)
+{
+    var i = 1;
+    <h2>Lich Su Mua Hang</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>STT</td>
+                <td>Mã DH</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.Code</td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+}

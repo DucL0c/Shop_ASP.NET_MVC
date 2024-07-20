@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/contact_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/contact_responsive.css">
+
+<div class="container contact_container">
+    <div class="row">
+        <div class="col">
+
+            <!-- Breadcrumbs -->
+
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a href="index.html">Liên hệ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Contact</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Map Container -->
+
+    <div class="row">
+        <div class="col">
+            <h3>Thông tin liên hệ</h3>
+            <p>Tên: Trần Đức Lộc</p>
+            <p>SDT: 0865.957.312</p>
+            <p>Email: tranducloc2010@gmail.com</p>
+        </div>
+        <div class="col">
+            <div id="google_map">
+                <div class="map_container">
+
+                    <div id="map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11901.657751245127!2d105.7952901!3d20.9919296!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x9fbde7e6d51debed!2sNg%C3%B5%2021%20L%C3%AA%20V%C4%83n%20L%C6%B0%C6%A1ng!5e0!3m2!1sen!2s!4v1649830924535!5m2!1sen!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Us -->
+
+    <div class="row">
+
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/assets/js/contact_custom.js"></script>
+}

@@ -1,0 +1,136 @@
+﻿            <!-- Sidebar -->
+<div class="sidebar">
+    <!-- Sidebar user (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+            <img src="~/Areas/Admin/Data/logo2.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <a href="#" class="d-block">Trần Đức Lộc</a>
+        </div>
+    </div>
+
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+            with font-awesome or any other icon font library -->
+            <li class="nav-item">
+                <a href="/Admin/Category" class="nav-link">
+                    <p>
+                        Danh mục
+                    </p>
+                </a>
+
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/News" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Tin tức
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Posts" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Bài viết
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Order" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Đơn hàng
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Role" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Role
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/Account" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Tài khoản
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        Quản lý sản phẩm
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/Admin/ProductCategory/Index" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Danh mục</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Product/Index" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Sản phẩm</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Colors/Index" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Color</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Admin/Sizes/Index" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Size</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="/Admin/post" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Cấu hình hệ thống
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <form id="logOffForm" action="/Account/LogOff" method="post">
+                    @Html.AntiForgeryToken()
+                    <a href="javascript:void(0)" class="nav-link" onclick="document.getElementById('logOffForm').submit()">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Đăng xuất
+                        </p>
+                    </a>
+                </form>
+            </li>
+
+        </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
+
+@if (Request.IsAuthenticated)
+{
+    <div style="display:none">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logOffForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}

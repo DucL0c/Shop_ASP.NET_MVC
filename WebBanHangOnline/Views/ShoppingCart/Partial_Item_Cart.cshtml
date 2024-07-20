@@ -1,0 +1,106 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.ShoppingCartItem>
+@using WebBanHangOnline.Common
+
+<table class="table">
+    <tr class="text-center">
+        <th>STT</th>
+        <th>Ảnh Sản Phẩm</th>
+        <th>Tên Sản Phẩm</th>
+        <th>Danh Mục</th>
+        <th>Giá</th>
+        <th>Size</th>
+        <th>Color</th>
+        <th style="width: 100px">Số Lượng</th>
+        <th>Thành tiền</th>
+        <th></th>
+    </tr>
+    @if (Model != null && Model.Any())
+    {
+        var i = 0;
+        var tongtien = decimal.Zero;
+        foreach (var item in Model)
+        {
+            tongtien += item.TotalPrice;
+            <tr class="text-center" id="trow_@item.ProductId">
+                <td>@(i+1)</td>
+                <td><img src="@item.ProductImg" width="60" /></td>
+                <td><a href="/chi-tiet/@item.Alias-@item.ProductId">@item.ProductName</a></td>
+                <td>@item.CategoryName</td>
+                <td>@Common.FormatNumber(item.Price, 0)</td>
+                <td>
+                    <select>
+                        @{
+                            if (ViewBag.Sizes != null)
+                            {
+                                var sizesForProduct = ViewBag.Sizes as IEnumerable<SelectListItem>;
+                                if (sizesForProduct != null)
+                                {
+                                    var filteredSizes = sizesForProduct
+                                        .Where(s => s.Value == item.ProductId.ToString())
+                                        .Select(s => s.Text);
+                                    foreach (var size in filteredSizes)
+                                    {
+                                        <option value="@size" @(size == item.Size ? "selected" : "")>@size</option>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <option value="">No size</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select>
+                        @{
+                            if (ViewBag.Colors != null)
+                            {
+                                var colorsForProduct = ViewBag.Colors as IEnumerable<SelectListItem>;
+
+                                if (colorsForProduct != null)
+                                {
+                                    var filteredColors = colorsForProduct
+                                        .Where(c => c.Value == item.ProductId.ToString())
+                                        .Select(c => c.Text);
+
+                                    foreach (var color in filteredColors)
+                                    {
+                                        <option value="@color" @(color == item.Color ? "selected" : "")>@color</option>
+                                    }
+                                }
+                            }
+
+                        }
+                    </select>
+                </td>
+                <td><input type="number" class="form-control" id="Quantity_@item.ProductId" value="@item.Quantity" min="0" /></td>
+                <th>@Common.FormatNumber(item.TotalPrice, 2)</th>
+                <td>
+                    <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>
+                    <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-success btnUpdate">Cập nhật</a>
+                </td>
+                <td></td>
+            </tr>
+            i += 1;
+        }
+        <tr>
+            <th colspan="6" class="text-right">Tổng: </th>
+            <th class="text-center">@Common.FormatNumber(tongtien, 0)</th>
+            <td></td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th>Không có sản phẩm nào trong giỏ hàng!!!</th>
+        </tr>
+    }
+</table>
+<script>
+    $('body').on('input', '.form-control', function () {
+        if ($(this).val() < 0) {
+            $(this).val(0);
+        }
+    });
+</script>

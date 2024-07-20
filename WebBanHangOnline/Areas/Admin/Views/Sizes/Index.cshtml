@@ -1,0 +1,143 @@
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.Sizes>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Size";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/Admin/Home/Index" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">@ViewBag.Title</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý @ViewBag.Title</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.Title</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách @ViewBag.Title</h3>
+            <div class="card-tools">
+                <a href="~/Admin/Sizes/Add" class="btn btn-primary">Thêm mới</a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    @using (Html.BeginForm("Index", "", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-append" style="order: -1;">
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                            </span>
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control" })
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Sản phẩm</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = ((ViewBag.page - 1) * ViewBag.pageSize) + 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.Id">
+                                <td>@i</td>
+                                <td>@((ViewBag.Product as SelectList).FirstOrDefault(p => p.Value == item.ProductId.ToString())?.Text)</td>
+                                <td>@item.Size</td>
+                                <td>
+                                    <a href="/Admin/Sizes/Edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xoá</a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào!!!</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-12"></div>
+                <div class="col-12" style="text-align:right">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('body').on('click', '.btnDelete', function () {
+                var id = $(this).data("id");
+                var conf = confirm("Bạn có muốn xoá bản ghi này không?");
+                if (conf === true) {
+                    $.ajax({
+                        url: '/Admin/Sizes/Delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (rs) {
+                            if (rs.success) {
+                                $('#trow_' + id).remove();
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+}
